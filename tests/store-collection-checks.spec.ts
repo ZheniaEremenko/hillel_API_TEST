@@ -29,5 +29,3 @@ test("check I can find pet by status", async ({ request }) => {
   );
   expect(issues.status()).toBe(404);
 });
-
-
