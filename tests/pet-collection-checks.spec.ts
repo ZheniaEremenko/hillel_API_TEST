@@ -99,3 +99,70 @@ test("check pet can be deleted", async ({ request }) => {
   });
   expect(issues.ok()).toBeTruthy();
 });
+
+
+test("{GET}Find pets array from available status", async ({ request }) => {
+  const response = await request.get('https://petstore.swagger.io/v2/pet/findByStatus?status=available',
+    {
+      data: {
+        "status": "available"
+      }
+    }
+  )
+  if (response.status() == 200) {
+    expect(response.url()).toBe('https://petstore.swagger.io/v2/pet/findByStatus?status=available');
+    const body = await response.json();
+    console.log(body)
+    expect(body.length > 0)
+  } else if (response.status() == 400) {
+    return console.log('Invalid status value')
+  } else {
+    return console.log(`Такого значення не повинно будти: ${response.status()}`)
+  }
+})
+
+test("{GET}Find pets array from PENDING status", async ({ request }) => {
+  const response = await request.get('https://petstore.swagger.io/v2/pet/findByStatus?status=pending',
+    {
+      data: {
+        "status": "pending"
+      }
+    }
+  )
+  if (response.status() == 200) {
+    expect(response.url()).toBe(`https://petstore.swagger.io/v2/pet/findByStatus?status=pending`);
+    const body = await response.json();
+    console.log(body)
+    expect(body.length > 0)
+  } else if (response.status() == 400) {
+    return console.log('Invalid status value')
+  } else {
+    return console.log(`Такого значення не повинно будти: ${response.status()} `)
+  }
+})
+
+test("{GET}Find pets array from SOLD status", async ({ request }) => {
+  const response = await request.get('https://petstore.swagger.io/v2/pet/findByStatus?status=sold',
+    {
+      data: {
+        "status": "sold"
+      }
+    }
+  )
+  expect(response.url()).toBe('https://petstore.swagger.io/v2/pet/findByStatus?status=sold');
+  const body = await response.json();
+  console.log(body)
+})
+
+test("{GET}Find pets from petID", async ({ request }) => {
+  let petID = 5;
+  const response = await request.get(`https://petstore.swagger.io/v2/pet/${petID}`)
+  if (response.status() == 200) {
+    const body = await response.json();
+    console.log(body)
+  } else {
+    const Errorbody = await response.json();
+    console.log(`Pet not found with array:\n`, Errorbody)
+  }
+})
+
